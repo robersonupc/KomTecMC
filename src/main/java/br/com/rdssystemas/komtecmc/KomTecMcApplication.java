@@ -13,6 +13,7 @@ import br.com.rdssystemas.komtecmc.domain.Cidade;
 import br.com.rdssystemas.komtecmc.domain.Cliente;
 import br.com.rdssystemas.komtecmc.domain.Endereco;
 import br.com.rdssystemas.komtecmc.domain.Estado;
+import br.com.rdssystemas.komtecmc.domain.ItemPedido;
 import br.com.rdssystemas.komtecmc.domain.Pagamento;
 import br.com.rdssystemas.komtecmc.domain.PagamentoComBoleto;
 import br.com.rdssystemas.komtecmc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import br.com.rdssystemas.komtecmc.repositories.CidadeRepository;
 import br.com.rdssystemas.komtecmc.repositories.ClienteRepository;
 import br.com.rdssystemas.komtecmc.repositories.EnderecoRepository;
 import br.com.rdssystemas.komtecmc.repositories.EstadoRepository;
+import br.com.rdssystemas.komtecmc.repositories.ItemPedidoRepository;
 import br.com.rdssystemas.komtecmc.repositories.PagamentoRepository;
 import br.com.rdssystemas.komtecmc.repositories.PedidoRepository;
 import br.com.rdssystemas.komtecmc.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class KomTecMcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(KomTecMcApplication.class, args);
@@ -138,8 +143,18 @@ public class KomTecMcApplication implements CommandLineRunner {
 	    
 	    pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 	    pagamentoRepository.saveAll(Arrays.asList(pgto1, pgto2));
+	    
+	    ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+	    ItemPedido ip2 = new ItemPedido(ped1, p2, 0.00, 2, 80.00);
+	    ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+	    
+	    ped1.getItens().addAll(Arrays.asList(ip1));
+	    ped2.getItens().addAll(Arrays.asList(ip2, ip3));
+	    
+	    p1.getItens().addAll(Arrays.asList(ip1));
+	    p2.getItens().addAll(Arrays.asList(ip2, ip3));
 		
-		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
 	}
 	
