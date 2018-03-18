@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.rdssystemas.komtecmc.domain.Categoria;
 import br.com.rdssystemas.komtecmc.domain.Cidade;
+import br.com.rdssystemas.komtecmc.domain.Cliente;
+import br.com.rdssystemas.komtecmc.domain.Endereco;
 import br.com.rdssystemas.komtecmc.domain.Estado;
 import br.com.rdssystemas.komtecmc.domain.Produto;
+import br.com.rdssystemas.komtecmc.domain.enums.TipoCliente;
 import br.com.rdssystemas.komtecmc.repositories.CategoriaRepository;
 import br.com.rdssystemas.komtecmc.repositories.CidadeRepository;
+import br.com.rdssystemas.komtecmc.repositories.ClienteRepository;
+import br.com.rdssystemas.komtecmc.repositories.EnderecoRepository;
 import br.com.rdssystemas.komtecmc.repositories.EstadoRepository;
 import br.com.rdssystemas.komtecmc.repositories.ProdutoRepository;
 
@@ -30,6 +35,12 @@ public class KomTecMcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private EstadoRepository estadoRepository;
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(KomTecMcApplication.class, args);
@@ -73,6 +84,30 @@ public class KomTecMcApplication implements CommandLineRunner {
 		
 		estadoRepository.saveAll(Arrays.asList(est1, est2,est3));
 		cidadeRepository.saveAll(Arrays.asList(cid1, cid2,cid3, cid4, cid5, cid6, cid7));
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912277", TipoCliente.FISICA);
+		Cliente cli2 = new Cliente(null, "Marcelo Silva", "marcelo@gmail.com", "38398912288", TipoCliente.FISICA);
+		Cliente cli3 = new Cliente(null, "Tractorgyn", "contato@tractorgyn.com.br", "36378912000177", TipoCliente.JURIDICA);
+		Cliente cli4 = new Cliente(null, "Alvicto Ozores Nogueira & Cia", "pecas@kkmaquinas.com.br", "43378912000121", TipoCliente.JURIDICA);
+		
+		cli1.getTelefones().addAll(Arrays.asList("6232696601", "62981506090"));
+		cli2.getTelefones().addAll(Arrays.asList("6232396032", "62981507723"));
+		cli3.getTelefones().addAll(Arrays.asList("6232696601", "62981506090"));
+		cli4.getTelefones().addAll(Arrays.asList("6232696601", "62981506090"));
+		
+		Endereco e1 = new Endereco(null, "Rua JC305", "7A", "Quadra 21 Condominio Lotus", "Jardim do Cerrado 7", "74491607", cli1, cid1);
+		Endereco e2 = new Endereco(null, "Rua JC305", "12B", "Quadra 22 Condominio Lilas", "Jardim do Cerrado 7", "74491607", cli2, cid1);
+		Endereco e3 = new Endereco(null, "Av. Perimetral Norte", "1532", "Próximo a GO080", "Santa Genoveva 2", "74675027", cli3, cid1);
+		Endereco e4 = new Endereco(null, "Av. São Francisco", "1541", "Próximo ao areoporto", "Santa Genoveva", "74591007", cli4, cid1);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1));
+		cli2.getEnderecos().addAll(Arrays.asList(e2));
+		cli3.getEnderecos().addAll(Arrays.asList(e3));
+		cli4.getEnderecos().addAll(Arrays.asList(e4));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1, cli2, cli3, cli4));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2, e3, e4));
+		
 		
 	}
 	
